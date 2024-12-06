@@ -21,7 +21,6 @@ const Edit = ({ navigation, route }) => {
                 style={styles.input}
                 value={calories}
                 onChangeText={setCalories}
-                keyboardType="numeric"
                 placeholder="Enter calorie value"
             />
 
