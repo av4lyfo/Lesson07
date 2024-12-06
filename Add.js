@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, Keyboard } from 'react-native';
-import { foodItems } from './Data'; // Import the shared data source
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { foodItems } from './Data';
 
 const Add = ({ navigation }) => {
     const [name, setName] = useState('');

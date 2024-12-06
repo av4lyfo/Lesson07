@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, StatusBar, SectionList, Button, Alert } from 'react-native';
-import { foodItems } from './Data'; // Import the shared datasource
+import { foodItems } from './Data';
 
 const Home = ({ navigation }) => {
     const calculateCalories = () => {
