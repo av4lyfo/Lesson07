@@ -1,30 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, StatusBar, SectionList, Button, Alert } from 'react-native';
-import { foodItems as initialFoodItems } from './Data';
+import { foodItems } from './Data'; // Import the shared datasource
 
 const Home = ({ navigation }) => {
-    const [foodItems, setFoodItems] = useState(initialFoodItems);
-
-    const renderItem = ({ item, index }) => (
-        <TouchableOpacity
-            style={styles.itemContainer}
-            onPress={() =>
-                navigation.navigate('Edit', {
-                    index,
-                    name: item.name,
-                    calories: item.calories,
-                    setFoodItems,
-                    foodItems,
-                })
-            }
-        >
-            <Text style={styles.textStyle}>{item.name}</Text>
-            <Text style={styles.caloriesStyle}>Calories: {item.calories}</Text>
-        </TouchableOpacity>
-    );
-
     const calculateCalories = () => {
-        const totalCalories = foodItems.reduce((sum, item) => sum + item.calories, 0);
+        const totalCalories = foodItems[0].data.reduce((sum, item) => sum + Number(item.calorie), 0);
         let message = `Total Calories: ${totalCalories}\n`;
 
         if (totalCalories > 2000) {
@@ -42,20 +22,34 @@ const Home = ({ navigation }) => {
         Alert.alert('Calorie Summary', message);
     };
 
+    const renderItem = ({ item, index }) => (
+        <TouchableOpacity
+            style={styles.itemContainer}
+            onPress={() =>
+                navigation.navigate('Edit', {
+                    index,
+                    food: item.food,
+                    calorie: item.calorie,
+                })
+            }
+        >
+            <Text style={styles.textStyle}>{item.food}</Text>
+            <Text style={styles.caloriesStyle}>Calories: {item.calorie}</Text>
+        </TouchableOpacity>
+    );
+
     return (
         <View style={styles.container}>
-            {/* Add Food Button */}
             <View style={styles.buttonContainer}>
                 <Button
                     title="ADD FOOD"
-                    onPress={() => navigation.navigate('Add', { setFoodItems, foodItems })}
+                    onPress={() => navigation.navigate('Add')}
                 />
             </View>
 
-            {/* Food List */}
             <StatusBar hidden={true} />
             <SectionList
-                sections={[{ title: 'Food Items', data: foodItems }]}
+                sections={[{ title: 'Food Items', data: foodItems[0].data }]}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderItem}
                 renderSectionHeader={({ section: { title } }) => (
@@ -63,7 +57,6 @@ const Home = ({ navigation }) => {
                 )}
             />
 
-            {/* Calculate Calories Button */}
             <View style={styles.calculateButtonContainer}>
                 <Button title="CALCULATE CALORIES" onPress={calculateCalories} />
             </View>
@@ -80,21 +73,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#e6f0fa',
     },
     buttonContainer: {
-        padding: 10,
+
         backgroundColor: '#ffffff',
         borderWidth: 1,
         marginBottom: 10,
     },
-    headerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 10,
-        borderBottomWidth: 2,
-        borderBottomColor: '#333',
-        backgroundColor: '#a1c4fd',
-    },
     headerText: {
-        flex: 1,
         fontSize: 20,
         textAlign: 'center',
         fontWeight: 'bold',
@@ -114,7 +98,7 @@ const styles = StyleSheet.create({
         color: '#555',
     },
     calculateButtonContainer: {
-        padding: 10,
+
         backgroundColor: '#ffffff',
         borderWidth: 1,
     },

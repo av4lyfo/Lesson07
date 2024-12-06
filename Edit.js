@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
-import { foodItems } from './Data';
+import { foodItems } from './Data'; // Import the shared datasource
 
 const Edit = ({ navigation, route }) => {
-    const { name = '', calories = 0, index, setFoodItems, foodItems } = route.params || {};
-    const [newName, setNewName] = useState(name);
-    const [newCalories, setNewCalories] = useState(calories.toString());
+    const { index, food, calorie } = route.params;
+    const [newFood, setNewFood] = useState(food);
+    const [newCalories, setNewCalories] = useState(calorie.toString());
 
     return (
         <View style={styles.container}>
             <Text style={styles.label}>Food Name:</Text>
             <TextInput
                 style={styles.input}
-                value={newName}
-                onChangeText={setNewName}
+                value={newFood}
+                onChangeText={setNewFood}
                 placeholder="Enter food name"
             />
             <Text style={styles.label}>Calories:</Text>
@@ -25,20 +25,15 @@ const Edit = ({ navigation, route }) => {
                 placeholder="Enter calorie value"
             />
 
-            {/* Buttons */}
             <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ flex: 1, margin: 10 }}>
                     <Button
                         title="SAVE"
                         onPress={() => {
-                                let updatedItems = [...foodItems];
-                                updatedItems[index] = {
-                                    name: newName.trim(),
-                                    calories: parseInt(newCalories),
-                                };
-                                setFoodItems(updatedItems);
-                                navigation.goBack();
-
+                            // Update the datasource directly
+                            foodItems[0].data[index].food = newFood.trim();
+                            foodItems[0].data[index].calorie = newCalories;
+                            navigation.navigate('Home'); // Navigate back to Home
                         }}
                     />
                 </View>
@@ -51,10 +46,8 @@ const Edit = ({ navigation, route }) => {
                                 {
                                     text: 'Yes',
                                     onPress: () => {
-                                        let updatedItems = [...foodItems];
-                                        updatedItems.splice(index, 1);
-                                        setFoodItems(updatedItems);
-                                        navigation.goBack();
+                                        foodItems[0].data.splice(index, 1); // Remove the item
+                                        navigation.navigate('Home'); // Navigate back to Home
                                     },
                                 },
                             ]);

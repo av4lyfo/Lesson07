@@ -1,6 +1,9 @@
 const foodItems = [
-    { id: '1', name: 'Cheeseburger', calories: 303 },
-    { id: '2', name: 'Fries', calories: 312 },
+    {
+        data: [
+            { food: 'Cheeseburger', calorie: 303 },
+            { food: 'Fries', calorie: 312 },
+        ],
+    },
 ];
-
 export { foodItems };

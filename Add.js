@@ -1,49 +1,40 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, Keyboard } from 'react-native';
+import { foodItems } from './Data'; // Import the shared data source
 
-const Add = ({ navigation, route }) => {
-    const { setFoodItems, foodItems } = route.params; // Destructure props passed from Home
+const Add = ({ navigation }) => {
     const [name, setName] = useState('');
     const [calories, setCalories] = useState('');
 
     return (
         <View style={styles.container}>
-            <Text>Food Name:</Text>
+            <Text style={styles.label}>Food Name:</Text>
             <TextInput
                 style={styles.input}
                 value={name}
                 onChangeText={setName}
                 placeholder="Enter food name"
             />
-            <Text>Calories:</Text>
+            <Text style={styles.label}>Calories:</Text>
             <TextInput
                 style={styles.input}
                 value={calories}
                 onChangeText={setCalories}
-                keyboardType="numeric"
-                placeholder="Enter calories"
+                placeholder="Enter calorie value"
             />
-            <Button
-                title="Add Food"
-                onPress={() => {
-                    // Trim input (without error handling)
-                    const trimmedName = name.trim();
+            <View style={styles.buttonContainer}>
+                <Button
+                    title="ADD FOOD"
+                    onPress={() => {
+                        foodItems[0].data.push({
+                            food: name.trim(),
+                            calorie: calories,
+                        });
 
-                    // Create the new item
-                    const newItem = {
-                        id: Date.now().toString(),
-                        name: trimmedName,
-                        calories: parseInt(calories) || 0, // Default to 0 if input is invalid
-                    };
-
-                    // Update the foodItems state
-                    setFoodItems([...foodItems, newItem]);
-
-                    // Clear the keyboard and navigate back
-                    Keyboard.dismiss();
-                    navigation.goBack(); // Navigate back to the Home screen
-                }}
-            />
+                        navigation.navigate('Home');
+                    }}
+                />
+            </View>
         </View>
     );
 };
@@ -54,13 +45,21 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#f8f9fa',
     },
+    label: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
     input: {
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,
         padding: 10,
-        marginVertical: 10,
+        marginBottom: 15,
         backgroundColor: '#fff',
+    },
+    buttonContainer: {
+        marginTop: 10,
     },
 });
 
